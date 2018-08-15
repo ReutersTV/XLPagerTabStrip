@@ -319,9 +319,9 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
         cell.label.text = indicatorInfo.title
         cell.accessibilityLabel = indicatorInfo.accessibilityLabel
         cell.label.font = settings.style.buttonBarItemFont
-        cell.label.textColor = settings.style.buttonBarItemTitleColor ?? cell.label.textColor
-        cell.contentView.backgroundColor = settings.style.buttonBarItemBackgroundColor ?? cell.contentView.backgroundColor
-        cell.backgroundColor = settings.style.buttonBarItemBackgroundColor ?? cell.backgroundColor
+        cell.label.textColor = settings.style.buttonBarItemTitleColor
+        cell.contentView.backgroundColor = settings.style.buttonBarItemBackgroundColor
+        cell.backgroundColor = settings.style.buttonBarItemBackgroundColor
         if let image = indicatorInfo.image {
             cell.imageView.image = image
         }
@@ -347,6 +347,16 @@ open class ButtonBarPagerTabStripViewController: PagerTabStripViewController, Pa
         cell.accessibilityTraits |= UIAccessibilityTraitButton
         cell.accessibilityTraits |= UIAccessibilityTraitHeader
         return cell
+    }
+
+    open func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? ButtonBarViewCell else {
+            fatalError("UICollectionViewCell should be or extend from ButtonBarViewCell")
+        }
+
+        if indexPath.item != currentIndex {
+            cell.label.textColor = settings.style.buttonBarItemTitleColor
+        }
     }
 
     // MARK: - UIScrollViewDelegate
